@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Métricas | V4 Premium Slides</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fontes Premium: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            red: '#FF1820',
+                            darkred: '#990E13',
+                            black: '#030303',
+                            gray: '#111111'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body, html { 
+            margin: 0; padding: 0;
+            background-color: #030303; 
+            color: #F5F5F7; 
+            font-family: 'Inter', sans-serif; 
+            -webkit-font-smoothing: antialiased; 
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Premium Text Gradients */
+        .text-gradient {
+            background: linear-gradient(135deg, #FFFFFF 0%, #A1A1AA 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-red {
+            background: linear-gradient(135deg, #FF1820 0%, #990E13 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* Bento Grid Glass Box */
+        .bento-box {
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.7) 0%, rgba(5, 5, 5, 0.9) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .bento-box:hover {
+            border-color: rgba(255, 24, 32, 0.4);
+            box-shadow: 0 30px 60px rgba(255,24,32,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+        
+        /* Subtle Red Glow inside Bento on Hover */
+        .bento-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,24,32,0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        .bento-box:hover::before { opacity: 1; }
+
+        /* Grain Overlay for Texture */
+        .grain-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            pointer-events: none; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Swiper Styles */
+        .swiper {
+            width: 100%;
+            height: 100vh;
+        }
+        .swiper-slide {
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px 40px; /* Leave space for fixed header */
+            box-sizing: border-box;
+        }
+        
+        /* Custom Scrollbar for inner slides */
+        .swiper-slide::-webkit-scrollbar {
+            width: 6px;
+        }
+        .swiper-slide::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        .swiper-slide::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+        
+        /* Pagination Bullets */
+        .swiper-pagination-bullet {
+            background-color: #444;
+            opacity: 1;
+        }
+        .swiper-pagination-bullet-active {
+            background-color: #FF1820;
+        }
+        
+        /* Fix elements inside slide to have max width */
+        .slide-content {
+            width: 100%;
+            max-width: 1280px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body class="selection:bg-brand-red selection:text-white">
+    <div class="grain-overlay"></div>
+
+    <!-- Fixed Header -->
+    <header class="fixed top-0 w-full z-50 bg-brand-black/80 backdrop-blur-md border-b border-white/5 py-4 px-6 md:px-12 flex justify-between items-center">
+        <div class="font-black tracking-tighter text-xl flex items-center gap-2">
+            FOOD<span class="text-brand-red">MÉTRICAS</span>
+        </div>
+
+    </header>
+
+    <!-- Swiper Container -->
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            
+            <!-- SLIDE 1: HERO -->
+            <div class="swiper-slide">
+                <section class="slide-content flex flex-col items-center justify-center text-center">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-brand-red/30 bg-brand-red/10 text-brand-red text-sm font-semibold tracking-widest uppercase mb-8">
+                        <span class="w-2 h-2 rounded-full bg-brand-red animate-pulse"></span>
+                        Proposta Comercial
+                    </div>
+                    <h1 class="text-6xl md:text-[8rem] lg:text-[10rem] font-black tracking-tighter leading-[0.85] mb-8">
+                        FOOD<br>
+                        <span class="text-gradient-red">MÉTRICAS</span>
+                    </h1>
+                    <p class="text-xl md:text-3xl text-gray-400 max-w-4xl mx-auto font-light leading-relaxed mb-12">
+                        A solução mais completa e especializada em <strong class="text-white font-semibold">marketing gastronômico</strong> para alavancar suas vendas e fidelizar clientes.
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-gray-300 font-semibold text-xs md:text-lg tracking-[0.2em] uppercase">
+                        <span>Atração</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-red shadow-[0_0_10px_rgba(255,24,32,0.6)]"></span>
+                        <span>Relacionamento</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-red shadow-[0_0_10px_rgba(255,24,32,0.6)]"></span>
+                        <span>Conversão</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-red shadow-[0_0_10px_rgba(255,24,32,0.6)]"></span>
+                        <span>Recorrência</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SLIDE 2: AS DORES -->
+            <div class="swiper-slide">
+                <section class="slide-content">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-6xl font-black tracking-tighter mb-6">Por que o seu restaurante <br><span class="text-brand-red">ainda perde dinheiro?</span></h2>
+                        <p class="text-xl text-gray-400 font-light max-w-3xl mx-auto">Você investe em produtos e atendimento, mas as mesas continuam vazias ou os pedidos não estão chegando. Onde está o erro?</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bento-box p-8 border-l-[4px] !border-l-brand-red hover:!border-l-brand-red transition-all duration-300">
+                            <h3 class="text-white font-bold text-2xl mb-4 flex items-center gap-4">
+                                <i class="ph ph-users text-brand-red text-3xl"></i> Dificuldade de Atração
+                            </h3>
+                            <p class="text-gray-400 leading-relaxed text-lg">As pessoas ainda não sabem que você existe. Sem um fluxo contínuo de novos clientes, a operação não se sustenta no longo prazo.</p>
+                        </div>
+                        
+                        <div class="bento-box p-8 border-l-[4px] !border-l-brand-red hover:!border-l-brand-red transition-all duration-300">
+                            <h3 class="text-white font-bold text-2xl mb-4 flex items-center gap-4">
+                                <i class="ph ph-money text-brand-red text-3xl"></i> Custo sem Retorno
+                            </h3>
+                            <p class="text-gray-400 leading-relaxed text-lg">Agências prometem milagres e entregam apenas posts bonitos. Marketing sem ROI é despesa.</p>
+                        </div>
+
+                        <div class="bento-box p-8 border-l-[4px] !border-l-brand-red hover:!border-l-brand-red transition-all duration-300">
+                            <h3 class="text-white font-bold text-2xl mb-4 flex items-center gap-4">
+                                <i class="ph ph-eye-slash text-brand-red text-3xl"></i> Invisibilidade Local
+                            </h3>
+                            <p class="text-gray-400 leading-relaxed text-lg">Concorrentes dominam as buscas por "restaurantes perto de mim" enquanto você fica para trás.</p>
+                        </div>
+
+                        <div class="bento-box p-8 border-l-[4px] !border-l-brand-red hover:!border-l-brand-red transition-all duration-300 bg-gradient-to-br from-brand-red/5 to-transparent">
+                            <h3 class="text-white font-bold text-2xl mb-4 flex items-center gap-4">
+                                <i class="ph ph-motorcycle text-brand-red text-3xl"></i> 
+                                <span class="leading-tight">Refém do Marketplace <br><span class="text-base text-gray-400 font-medium">(iFood, 99Food, Keeta)</span></span>
+                            </h3>
+                            <p class="text-gray-300 leading-relaxed text-lg">Vender sem estratégia significa perder lucro. Precisamos mudar esse cenário urgente.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SLIDE NOVO: NÃO FAZEMOS APENAS TRÁFEGO -->
+            <div class="swiper-slide">
+                <section class="slide-content text-center">
+                    <h2 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-4">
+                        Não fazemos <br><span class="text-brand-red">apenas tráfego.</span>
+                    </h2>
+                    <p class="text-xl md:text-2xl text-gray-400 font-light max-w-3xl mx-auto mb-16">
+                        Construímos operações mais lucrativas de ponta a ponta.
+                    </p>
+                    
+                    <div class="flex flex-wrap justify-center gap-3 md:gap-5 max-w-4xl mx-auto">
+                        <div class="group px-6 py-3 md:px-8 md:py-4 rounded-full border border-white/5 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-xl text-gray-200 font-medium text-sm md:text-base tracking-wide hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center gap-3">
+                            <i class="ph ph-target text-brand-red text-xl"></i> Estratégia
+                        </div>
+                        <div class="group px-6 py-3 md:px-8 md:py-4 rounded-full border border-white/5 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-xl text-gray-200 font-medium text-sm md:text-base tracking-wide hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center gap-3">
+                            <i class="ph ph-cursor-click text-brand-red text-xl"></i> Conversão
+                        </div>
+                        <div class="group px-6 py-3 md:px-8 md:py-4 rounded-full border border-white/5 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-xl text-gray-200 font-medium text-sm md:text-base tracking-wide hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center gap-3">
+                            <i class="ph ph-currency-dollar text-brand-red text-xl"></i> Precificação
+                        </div>
+                        <div class="group px-6 py-3 md:px-8 md:py-4 rounded-full border border-white/5 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-xl text-gray-200 font-medium text-sm md:text-base tracking-wide hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center gap-3">
+                            <i class="ph ph-users text-brand-red text-xl"></i> CRM
+                        </div>
+                        <div class="group px-6 py-3 md:px-8 md:py-4 rounded-full border border-white/5 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-xl text-gray-200 font-medium text-sm md:text-base tracking-wide hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center gap-3">
+                            <i class="ph ph-storefront text-brand-red text-xl"></i> Marketplace
+                        </div>
+                        
+                        <div class="w-full mt-6 flex justify-center">
+                            <div class="group px-10 py-4 rounded-full border border-brand-red/40 text-white font-bold text-base md:text-lg tracking-wide bg-gradient-to-r from-brand-red/10 to-brand-red/5 backdrop-blur-xl shadow-[0_0_40px_rgba(255,24,32,0.15)] hover:shadow-[0_0_60px_rgba(255,24,32,0.3)] hover:border-brand-red/70 hover:-translate-y-1 transition-all duration-500 flex items-center gap-3 cursor-default">
+                                <i class="ph-fill ph-rocket-launch text-brand-red group-hover:text-white transition-colors duration-500 text-2xl"></i> Performance Extrema
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SLIDE NOVO: MÉTODO FOOD MÉTRICAS -->
+            <div class="swiper-slide">
+                <section class="slide-content">
+                    <div class="text-center mb-16">
+                        <h2 class="text-5xl md:text-7xl font-black tracking-tighter">Método <span class="text-brand-red">Food Métricas</span></h2>
+                    </div>
+
+                    <div class="relative w-full max-w-6xl mx-auto">
+                        <div class="absolute top-[3.5rem] left-0 w-full h-[1px] bg-brand-red/20 hidden md:block z-0"></div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
+                            <div class="bento-box p-8 text-center flex flex-col items-center bg-[#0A0A0A] border border-white/5 hover:border-brand-red/30 transition-all duration-300">
+                                <div class="w-14 h-14 rounded-full bg-brand-red/20 flex items-center justify-center text-brand-red font-bold mb-8 border border-brand-red/30 relative z-10 bg-[#0A0A0A]">
+                                    1
+                                </div>
+                                <h3 class="text-white font-bold text-xl mb-3">Diagnóstico</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed">Análise completa da operação.</p>
+                            </div>
+                            
+                            <div class="bento-box p-8 text-center flex flex-col items-center bg-[#0A0A0A] border border-white/5 hover:border-brand-red/30 transition-all duration-300">
+                                <div class="w-14 h-14 rounded-full bg-brand-red/20 flex items-center justify-center text-brand-red font-bold mb-8 border border-brand-red/30 relative z-10 bg-[#0A0A0A]">
+                                    2
+                                </div>
+                                <h3 class="text-white font-bold text-xl mb-3">Estratégia</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed">Estruturação do crescimento.</p>
+                            </div>
+
+                            <div class="bento-box p-8 text-center flex flex-col items-center bg-[#0A0A0A] border border-white/5 hover:border-brand-red/30 transition-all duration-300">
+                                <div class="w-14 h-14 rounded-full bg-brand-red/20 flex items-center justify-center text-brand-red font-bold mb-8 border border-brand-red/30 relative z-10 bg-[#0A0A0A]">
+                                    3
+                                </div>
+                                <h3 class="text-white font-bold text-xl mb-3">Execução</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed">Tráfego + Marketplace + Cardápio + GMN + Gestão de CRM.</p>
+                            </div>
+
+                            <div class="bento-box p-8 text-center flex flex-col items-center bg-[#0A0A0A] border border-brand-red/30 relative shadow-[0_0_30px_rgba(255,24,32,0.1)] overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-b from-brand-red/5 to-transparent"></div>
+                                <div class="relative z-10 w-14 h-14 rounded-full bg-brand-red flex items-center justify-center text-white font-bold mb-8 shadow-[0_0_20px_rgba(255,24,32,0.8)]">
+                                    4
+                                </div>
+                                <h3 class="text-white font-bold text-xl mb-3 relative z-10">Escala</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed relative z-10">Aumento de vendas e retenção.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SLIDE 3: O NOVO ECOSSISTEMA BENTO -->
+            <div class="swiper-slide">
+                <section class="slide-content relative py-10">
+                    <div class="text-center mb-16">
+                        <h2 class="text-5xl md:text-7xl font-black tracking-tighter mb-4">Ecossistema <span class="text-brand-red">Integrado.</span></h2>
+                        <p class="text-xl md:text-2xl text-gray-400 font-light max-w-3xl mx-auto">Processos bem estruturados para escalar sua operação sem depender de "sorte".</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                        <!-- Conexões visuais sutis atrás dos cards (só desktop) -->
+                        <div class="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] border border-dashed border-brand-red/20 rounded-[3rem] z-[-1]"></div>
+                        <div class="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-brand-black border border-brand-red/50 items-center justify-center z-10 shadow-[0_0_50px_rgba(255,24,32,0.15)]">
+                            <div class="text-center leading-none">
+                                <div class="font-black text-[10px] text-brand-red uppercase tracking-widest">Método</div>
+                                <div class="font-black text-lg text-white tracking-tighter">MC</div>
+                            </div>
+                        </div>
+
+                        <!-- Performance -->
+                        <div class="bento-box p-8 flex flex-col justify-between min-h-[280px]">
+                            <div>
+                                <div class="flex items-center gap-4 mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-brand-red flex items-center justify-center shadow-[0_0_20px_rgba(255,24,32,0.4)]">
+                                        <i class="ph ph-chart-line-up text-white text-lg"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white tracking-tight">Performance</h3>
+                                </div>
+                                <p class="text-gray-400 mb-6 font-light text-base">Tráfego de performance focado em faturamento. Levamos o cliente certo para o seu balcão e delivery.</p>
+                            </div>
+                            <ul class="flex flex-col gap-2">
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Meta Ads (Insta/Face)</li>
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Google Ads Local</li>
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> TikTok Ads</li>
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Google Meu Negócio</li>
+                            </ul>
+                        </div>
+
+                        <!-- Marketplace -->
+                        <div class="bento-box p-8 flex flex-col justify-between min-h-[280px]">
+                            <div>
+                                <div class="flex items-center gap-4 mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-brand-red flex items-center justify-center shadow-[0_0_20px_rgba(255,24,32,0.4)]">
+                                        <i class="ph ph-storefront text-white text-lg"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white tracking-tight">Marketplace</h3>
+                                </div>
+                                <p class="text-gray-400 mb-6 font-light text-base">Otimização completa das suas vitrines digitais para dominar a concorrência.</p>
+                            </div>
+                            <ul class="flex flex-col gap-2">
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Gestão Avançada de iFood</li>
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Gestão Avançada de 99Food</li>
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Gestão Avançada de Keeta</li>
+                            </ul>
+                        </div>
+
+                        <!-- Conversão -->
+                        <div class="bento-box p-8 flex flex-col justify-between min-h-[280px]">
+                            <div>
+                                <div class="flex items-center gap-4 mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-brand-red flex items-center justify-center shadow-[0_0_20px_rgba(255,24,32,0.4)]">
+                                        <i class="ph ph-cursor-click text-white text-lg"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white tracking-tight">Conversão</h3>
+                                </div>
+                                <p class="text-gray-400 mb-6 font-light text-base">Engenharia visual e estratégica para fazer o cliente comprar os produtos mais lucrativos.</p>
+                            </div>
+                            <ul class="flex flex-col gap-2">
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Engenharia do Cardápio Digital</li>
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Análise e Conversão dos Ativos Digitais</li>
+                            </ul>
+                        </div>
+
+                        <!-- Retenção -->
+                        <div class="bento-box p-8 flex flex-col justify-between min-h-[280px]">
+                            <div>
+                                <div class="flex items-center gap-4 mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-brand-red flex items-center justify-center shadow-[0_0_20px_rgba(255,24,32,0.4)]">
+                                        <i class="ph ph-arrows-clockwise text-white text-lg"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white tracking-tight">Retenção</h3>
+                                </div>
+                                <p class="text-gray-400 mb-6 font-light text-base">Fazer o cliente comprar de novo é mais barato que atrair um novo.</p>
+                            </div>
+                            <ul class="flex flex-col gap-2">
+
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Remarketing</li>
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Gestão de CRM</li>
+                                <li class="flex items-center gap-3 text-gray-300 text-sm font-medium"><i class="ph ph-check-circle text-brand-red"></i> Análise e ações baseadas em dados reais do seu negócio</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SLIDE 4: METAS ALCANÇADAS -->
+            <div class="swiper-slide">
+                <section class="slide-content text-center">
+                    <h2 class="text-5xl md:text-6xl font-black tracking-tight mb-6">
+                        Cada conquista merece ser <span class="text-brand-red">celebrada.</span>
+                    </h2>
+                    <p class="text-xl text-gray-400 max-w-3xl mx-auto font-light mb-16">
+                        Enquanto o mercado tradicional nunca acaba a sazonalidade, nossos parceiros têm aumento de faturamento constante.
+                    </p>
+                    
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <div class="bento-box w-40 md:w-56 py-10 flex flex-col items-center border-b-[6px] border-b-[#CD7F32] bg-gradient-to-b from-white/5 to-[#CD7F32]/10">
+                            <div class="text-4xl md:text-5xl font-black text-white mb-2">100K</div>
+                            <div class="text-xs font-bold tracking-[0.3em] text-[#CD7F32] uppercase">Bronze</div>
+                        </div>
+                        <div class="bento-box w-40 md:w-56 py-10 flex flex-col items-center border-b-[6px] border-b-[#C0C0C0] bg-gradient-to-b from-white/5 to-[#C0C0C0]/10">
+                            <div class="text-4xl md:text-5xl font-black text-white mb-2">200K</div>
+                            <div class="text-xs font-bold tracking-[0.3em] text-[#C0C0C0] uppercase">Prata</div>
+                        </div>
+                        <div class="bento-box w-48 md:w-64 py-12 flex flex-col items-center border-b-[6px] border-b-[#FFD700] bg-gradient-to-b from-white/5 to-[#FFD700]/15 transform md:scale-110 shadow-[0_20px_50px_rgba(255,215,0,0.15)] z-10">
+                            <i class="ph-fill ph-crown text-3xl text-[#FFD700] mb-3"></i>
+                            <div class="text-5xl md:text-6xl font-black text-white mb-2">500K</div>
+                            <div class="text-sm font-bold tracking-[0.3em] text-[#FFD700] uppercase">Ouro</div>
+                        </div>
+                        <div class="bento-box w-40 md:w-56 py-10 flex flex-col items-center border-b-[6px] border-b-[#E5E4E2] bg-gradient-to-b from-white/5 to-[#E5E4E2]/10">
+                            <div class="text-4xl md:text-5xl font-black text-white mb-2">1M</div>
+                            <div class="text-xs font-bold tracking-[0.3em] text-[#E5E4E2] uppercase">Platina</div>
+                        </div>
+                        <div class="bento-box w-40 md:w-56 py-10 flex flex-col items-center border-b-[6px] border-b-[#B9F2FF] bg-gradient-to-b from-white/5 to-[#B9F2FF]/10">
+                            <div class="text-4xl md:text-5xl font-black text-white mb-2">2M</div>
+                            <div class="text-xs font-bold tracking-[0.3em] text-[#B9F2FF] uppercase">Diamante</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SLIDE NOVO: +90 OPERAÇÕES ATENDIDAS -->
+            <div class="swiper-slide">
+                <style>
+                    @keyframes scroll-left {
+                        0% { transform: translateX(0); }
+                        100% { transform: translateX(-50%); }
+                    }
+                    .animate-scroll {
+                        animation: scroll-left 60s linear infinite;
+                        display: flex;
+                        width: max-content;
+                    }
+                </style>
+                <section class="slide-content text-center w-full overflow-hidden relative">
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-20 md:mb-32">
+                        <span class="font-black text-white">+200</span> <span class="text-gray-500 tracking-normal inline-block">OPERAÇÕES ATENDIDAS</span>
+                    </h2>
+                    
+                    <div class="relative w-full overflow-hidden flex whitespace-nowrap">
+                        <div class="absolute inset-0 z-10 pointer-events-none" style="background: linear-gradient(to right, #030303 0%, transparent 15%, transparent 85%, #030303 100%);"></div>
+                        <div class="animate-scroll">
+                            <div class="flex items-center gap-6 md:gap-10 px-5 opacity-100">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-24.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/11/Frame-8.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/11/Frame-34-1.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-26.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/11/Frame-37.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/11/Frame-36.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-23.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-22.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-21.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-30.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-27.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-28.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-29.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-31.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/10/Frame-32.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="https://foodmetricas.com.br/wp-content/uploads/2025/11/Frame-35.webp" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                                <img src="../assets/logos/202603301554_jffk_s.avif" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/334487743_760438688642639_4739306191891450397_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/347629015_720329173184337_1453569801301460026_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/351774841_1231363314184130_6142245576282827293_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/352228875_1090504195500632_708940445572868889_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/370048514_306817458671382_14830962990667010_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/370287585_838223287911225_3489536848949411479_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/375297874_6894779250532323_7260867999392902713_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/378859253_152898411205892_6068196865898474389_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/408326139_1509227343257873_2554420366937091880_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/416011378_781017660528778_5743859964410838524_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/426011324_371733138821371_6778599090993196350_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/441465255_824892899512173_7733439691494813514_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/443820708_757472113167383_5764083145398587195_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/450181770_122095207088406987_817504493914402685_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/452122251_1711999089603535_5343351020117849478_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/454321510_463774063293953_5721330422019696851_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/454430671_122094110366473209_7918401306762021099_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/454762306_489488227363708_7634078939288796985_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/464364637_1257559712181613_7342946595227862899_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/465016276_493143713184589_133524822990867382_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/467574556_489861243393107_5327108134438952632_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/468405788_122093147714658673_1855406826434180254_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/468919457_1263989678179648_1746723266512095884_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/469110417_548953124605075_5754996789209671569_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/469437445_1972610986550522_9210870252439363770_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/472293988_1329482171278313_1149667636082960544_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/473598225_952373440164420_2174037878875978035_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/480518931_122094803162786575_8363163657067675956_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/480568307_122227433240198834_2316547975063469052_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/486652994_122098606484822227_3125910494144861820_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/487462937_122096468024831246_2322497779096527144_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/491498650_979764827692301_9072271991111797216_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/497701900_18388626910142175_8209621289735004083_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/503033215_18058707602189552_654507470341938963_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/504034990_18066672500298887_6994692211605130965_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/505242855_10239453195093162_6360673019624001522_n.webp" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/515678516_122112680282922790_4322175890918256797_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/517810679_122214153278121412_1326617579518225081_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/521475057_18405825487117467_2992492229654242367_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/535858230_17842031799563517_5873379028072545617_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/538479393_24321778174149572_4509038288754031767_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/541987357_122115389540966531_4418025435810121433_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/549210620_1107483614842216_7496334920482901464_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/579925128_18113886655600303_7558177351579360532_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/588462015_17988103727862972_6379270216615125284_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/610671980_18341204779233056_5375241624310137944_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/611658618_18109639882632349_4811548724820883078_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/612065378_18089614931288229_5103059613864038425_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/615569651_18071609504618847_1949150122376808991_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/616229612_18070921874417496_5291940821895000205_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/618353782_122101057017229706_851636618240162436_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/624562487_122194706582787420_5288120150925572226_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/637634659_122103112005261391_6478262165824830340_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/644479010_919222011070699_2876603412387790340_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/658108284_18089792684335677_8282985600887973374_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/663136071_18099561343953522_6140128035778426618_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/681980499_18095891126125663_2632093458466170236_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/SEVEN BURGER HAMBUERIA LTDA1721343237833blob.jpeg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/a38b3ffd358356506_1024567468477266_7050659421672720468_n.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo1.png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo10.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo11.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo12.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo13.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo14.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo15.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo2.png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo3.png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo4.png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo5.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo5.png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo6.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo6.png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo7.png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo8.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo8.png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/logo9.jpg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/thumb_4b1547f3cdf54463-166c-4728-aea5-58bab36b06f4.jpeg" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/unnamed (1).png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/unnamed (2).png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+<img src="../assets/logos/unnamed.png" alt="Logo Cliente" class="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-contain bg-white p-3 md:p-4 border-2 border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:scale-110 hover:z-10 hover:border-brand-red transition-all duration-500">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SLIDE 5: DEPOIMENTOS -->
+            <div class="swiper-slide">
+                <section class="slide-content">
+                    <h2 class="text-center text-4xl md:text-6xl font-black tracking-tight mb-16">
+                        Eles confiaram no <span class="text-brand-red">nosso método.</span>
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bento-box p-8 relative">
+                            <i class="ph-fill ph-quotes text-5xl text-white/5 absolute top-6 right-6"></i>
+                            <div class="flex gap-1 text-brand-red mb-6">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                            </div>
+                            <p class="text-gray-300 font-light leading-relaxed mb-8 text-lg">"A Food Métricas trouxe uma visão estratégica que não tínhamos. Conseguimos atrair mais clientes e aumentar nosso ticket médio rapidamente."</p>
+                            <div class="flex items-center gap-4 border-t border-white/10 pt-6">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-red to-brand-darkred flex items-center justify-center font-bold text-white shadow-lg">HB</div>
+                                <div>
+                                    <h4 class="text-white font-bold">Home Burger</h4>
+                                    <span class="text-gray-500 text-xs uppercase tracking-widest font-medium">Hamburgueria</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bento-box p-8 relative">
+                            <i class="ph-fill ph-quotes text-5xl text-white/5 absolute top-6 right-6"></i>
+                            <div class="flex gap-1 text-brand-red mb-6">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                            </div>
+                            <p class="text-gray-300 font-light leading-relaxed mb-8 text-lg">"Nossa marca vem sendo cada vez mais conhecida na região. O tráfego pago focado em performance mudou o nosso jogo no iFood."</p>
+                            <div class="flex items-center gap-4 border-t border-white/10 pt-6">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-red to-brand-darkred flex items-center justify-center font-bold text-white shadow-lg">NR</div>
+                                <div>
+                                    <h4 class="text-white font-bold">Na'vi Rooftop</h4>
+                                    <span class="text-gray-500 text-xs uppercase tracking-widest font-medium">Restaurante</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bento-box p-8 relative">
+                            <i class="ph-fill ph-quotes text-5xl text-white/5 absolute top-6 right-6"></i>
+                            <div class="flex gap-1 text-brand-red mb-6">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                            </div>
+                            <p class="text-gray-300 font-light leading-relaxed mb-8 text-lg">"Tivemos o melhor dia de vendas da nossa história depois que implementamos as estratégias de conversão de cardápio e WhatsApp."</p>
+                            <div class="flex items-center gap-4 border-t border-white/10 pt-6">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-red to-brand-darkred flex items-center justify-center font-bold text-white shadow-lg">FG</div>
+                                <div>
+                                    <h4 class="text-white font-bold">Fat Guys</h4>
+                                    <span class="text-gray-500 text-xs uppercase tracking-widest font-medium">Operação Delivery</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- SLIDE NOVO: PROPOSTA COMERCIAL -->
+            <div class="swiper-slide">
+                <section class="slide-content text-center w-full max-w-5xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-4">
+                        Investimento <span class="font-black text-white">Estratégico.</span>
+                    </h2>
+                    <p class="text-xl md:text-2xl text-gray-400 font-light max-w-3xl mx-auto mb-16">
+                        O ecossistema completo para o seu crescimento.
+                    </p>
+
+                    <div class="bento-box mx-auto max-w-4xl p-10 md:p-14 relative overflow-hidden text-left border-brand-red/30 shadow-[0_0_50px_rgba(255,24,32,0.1)] hover:shadow-[0_0_80px_rgba(255,24,32,0.2)]">
+                        <!-- Red glow behind -->
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-brand-red/20 blur-[100px] -z-10 rounded-full pointer-events-none"></div>
+                        <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-red/10 blur-[100px] -z-10 rounded-full pointer-events-none"></div>
+                        
+                        <div class="flex flex-col md:flex-row gap-12 items-stretch justify-between">
+                            <!-- Left: Deliverables -->
+                            <div class="flex-1 w-full">
+                                <h3 class="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                                    <i class="ph-fill ph-crown text-brand-red"></i> Plano Aceleração
+                                </h3>
+                                <ul class="space-y-3 md:space-y-4">
+                            <li class="flex items-start gap-4">
+                                <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 mt-0.5"><i class="ph-bold ph-check text-brand-red text-[10px] md:text-sm"></i></div>
+                                <span class="text-gray-300 font-medium text-base md:text-lg leading-snug">Gestão de Tráfego Pago (Meta Ads)</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 mt-0.5"><i class="ph-bold ph-check text-brand-red text-[10px] md:text-sm"></i></div>
+                                <span class="text-gray-300 font-medium text-base md:text-lg leading-snug">Gestão de Tráfego Pago (Google Ads)</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 mt-0.5"><i class="ph-bold ph-check text-brand-red text-[10px] md:text-sm"></i></div>
+                                <span class="text-gray-300 font-medium text-base md:text-lg leading-snug">Gestão do Google Meu Negócio</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 mt-0.5"><i class="ph-bold ph-check text-brand-red text-[10px] md:text-sm"></i></div>
+                                <span class="text-gray-300 font-medium text-base md:text-lg leading-snug">Engenharia de Cardápio Digital</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 mt-0.5"><i class="ph-bold ph-check text-brand-red text-[10px] md:text-sm"></i></div>
+                                <span class="text-gray-300 font-medium text-base md:text-lg leading-snug">Gestão de Marketplaces (iFood, 99Food, Keeta)</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 mt-0.5"><i class="ph-bold ph-check text-brand-red text-[10px] md:text-sm"></i></div>
+                                <span class="text-gray-300 font-medium text-base md:text-lg leading-snug">Diagnóstico das Redes Sociais</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 mt-0.5"><i class="ph-bold ph-check text-brand-red text-[10px] md:text-sm"></i></div>
+                                <span class="text-gray-300 font-medium text-base md:text-lg leading-snug">Planejamento Estratégico focado no Delivery</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 mt-0.5"><i class="ph-bold ph-check text-brand-red text-[10px] md:text-sm"></i></div>
+                                <span class="text-gray-300 font-medium text-base md:text-lg leading-snug">Planejamento Estratégico para Aumento de Vendas</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-red/10 flex items-center justify-center shrink-0 mt-0.5"><i class="ph-bold ph-check text-brand-red text-[10px] md:text-sm"></i></div>
+                                <span class="text-gray-300 font-medium text-base md:text-lg leading-snug">Implementação, Monitoramento, Análise e Gestão de CRM</span>
+                            </li>
+                        </ul>
+                            </div>
+
+                            <!-- Right: Price -->
+                    <div class="md:w-[380px] w-full shrink-0 bg-gradient-to-b from-[#111] to-[#050505] border border-white/10 rounded-3xl p-10 flex flex-col justify-center items-center relative overflow-hidden shadow-2xl">
+                        <!-- Decorative Top Line -->
+                        <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-red/0 via-brand-red to-brand-red/0"></div>
+                        
+                        <!-- Glowing effects inside card -->
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-red/10 blur-[50px] rounded-full pointer-events-none"></div>
+                        <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-brand-red/10 blur-[50px] rounded-full pointer-events-none"></div>
+
+                        <div class="w-14 h-14 rounded-full bg-brand-red/10 border border-brand-red/20 flex items-center justify-center mb-8 shadow-[0_0_20px_rgba(255,24,32,0.2)]">
+                            <i class="ph-bold ph-rocket text-brand-red text-2xl"></i>
+                        </div>
+                        
+                        <span class="text-gray-400 font-medium tracking-widest text-xs uppercase mb-3">Investimento Único Mensal</span>
+                        
+                        <div class="flex justify-center items-baseline gap-1 mb-6">
+                            <span class="text-2xl text-brand-red font-bold">R$</span>
+                            <span class="text-7xl font-black text-white tracking-tighter leading-none">1.997</span>
+                            <span class="text-2xl text-brand-red font-bold">,00</span>
+                        </div>
+                        
+                        <p class="text-gray-500 text-sm mb-10 text-center font-light">Sem surpresas. Transparência total em cada etapa.</p>
+                        
+                        <div class="w-full py-4 rounded-xl bg-white/5 border border-white/10 text-white/80 font-medium text-center text-sm uppercase tracking-widest">
+                            Proposta Exclusiva
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                </section>
+            </div>
+            <!-- SLIDE 6: CTA FINAL -->
+            <div class="swiper-slide">
+                <section id="contato" class="slide-content text-center">
+                    <h2 class="text-4xl md:text-6xl lg:text-8xl font-black tracking-tighter mb-8">
+                        Pronto para <span class="text-brand-red">escalar?</span>
+                    </h2>
+                    <p class="text-xl md:text-3xl text-gray-400 font-light mb-12">
+                        Agende uma reunião de diagnóstico com nosso time de especialistas.
+                    </p>
+                    <a href="#" class="inline-flex items-center gap-4 bg-brand-red text-white px-10 py-6 rounded-full text-2xl font-bold tracking-wide hover:bg-brand-darkred hover:scale-105 transition-all duration-300 shadow-[0_0_40px_rgba(255,24,32,0.4)]">
+                        <i class="ph ph-whatsapp-logo text-4xl"></i>
+                        Falar no WhatsApp
+                    </a>
+                </section>
+            </div>
+
+        </div>
+
+        <!-- Add Pagination -->
+        <div class="swiper-pagination mb-4"></div>
+        
+        <!-- Add Navigation -->
+        <div class="swiper-button-next !text-brand-red !opacity-50 hover:!opacity-100 hidden md:flex"></div>
+        <div class="swiper-button-prev !text-brand-red !opacity-50 hover:!opacity-100 hidden md:flex"></div>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            direction: "horizontal",
+            slidesPerView: 1,
+            spaceBetween: 0,
+            mousewheel: {
+                forceToAxis: true,
+                sensitivity: 1,
+                releaseOnEdges: true,
+            },
+            keyboard: {
+                enabled: true,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                dynamicBullets: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            speed: 800,
+            effect: "slide",
+            grabCursor: true,
+        });
+    </script>
+</body>
+</html>
