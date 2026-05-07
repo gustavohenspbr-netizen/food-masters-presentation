@@ -141,28 +141,84 @@
 
     <style>
         @media print {
+            @page { size: 1920px 1080px; margin: 0; }
             body, html {
+                width: 1920px !important;
+                height: 1080px !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
                 background-color: #030303 !important;
+                overflow: hidden !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
-            .reveal-up {
+            .reveal-up, .animate-scroll {
                 opacity: 1 !important;
                 transform: none !important;
                 animation: none !important;
                 transition: none !important;
             }
-            .animate-scroll {
-                animation: none !important;
-                transform: none !important;
-            }
-            #btn-pdf {
+            #btn-pdf, .swiper-pagination, .swiper-button-next, .swiper-button-prev, .grain-overlay {
                 display: none !important;
             }
-            section {
-                page-break-inside: avoid;
-                margin-bottom: 2rem !important;
+            /* Swiper Print Fixes */
+            .swiper {
+                overflow: hidden !important;
+                height: auto !important;
+                width: 1920px !important;
             }
+            .swiper-wrapper {
+                display: block !important;
+                transform: none !important;
+                width: 1920px !important;
+                height: auto !important;
+                overflow: hidden !important;
+            }
+            .swiper-slide {
+                width: 1920px !important;
+                height: 1080px !important;
+                opacity: 1 !important;
+                transform: none !important;
+                page-break-inside: avoid !important;
+                page-break-after: always !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 120px 80px 40px !important;
+                box-sizing: border-box !important;
+                margin: 0 !important;
+                overflow: hidden !important;
+            }
+            .slide-content {
+                width: 100% !important;
+                max-width: 1600px !important;
+                margin: auto !important;
+                transform: none !important;
+            }
+            /* Forçar Header Fixo na Impressão */
+            header {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 1920px !important;
+                height: 80px !important;
+            }
+            /* 🔴 FORÇAR TAILWIND DESKTOP (Evitar quebra de colunas) 🔴 */
+            [class*="md:grid-cols-2"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+            [class*="md:grid-cols-3"] { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+            [class*="md:grid-cols-4"] { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+            [class*="lg:grid-cols-2"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+            [class*="lg:grid-cols-3"] { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+            [class*="md:flex-row"] { flex-direction: row !important; }
+            [class*="md:block"] { display: block !important; }
+            [class*="md:flex"] { display: flex !important; }
+            [class*="md:w-56"] { width: 14rem !important; }
+            [class*="md:w-64"] { width: 16rem !important; }
+            [class*="md:scale-110"] { transform: scale(1.1) !important; }
+            [class*="md:text-5xl"] { font-size: 3rem !important; line-height: 1 !important; }
+            [class*="md:text-6xl"] { font-size: 3.75rem !important; line-height: 1 !important; }
+            [class*="md:text-7xl"] { font-size: 4.5rem !important; line-height: 1 !important; }
         }
     </style>
 </head>

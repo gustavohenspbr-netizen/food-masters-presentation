@@ -273,12 +273,93 @@
         
         .progress-bar-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.02); z-index: 100; }
         #progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #DC2626, #FFA500); transition: width 0.4s ease-out; box-shadow: 0 0 10px rgba(220, 38, 38, 0.5); }
+
+        /* 🌟 Print / PDF Export Styles (Estilo PowerPoint) 🌟 */
+        @media print {
+            @page { size: 1920px 1080px; margin: 0; }
+            body, html {
+                width: 1920px !important;
+                height: 1080px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                background-color: #030303 !important;
+                overflow: hidden !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            #slider-container {
+                display: block !important;
+                width: 1920px !important;
+                height: auto !important;
+                overflow: hidden !important;
+                transform: none !important;
+            }
+            .slide {
+                width: 1920px !important;
+                height: 1080px !important;
+                page-break-inside: avoid !important;
+                page-break-after: always !important;
+                position: relative !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                transform: none !important;
+                margin: 0 !important;
+                overflow: hidden !important;
+                padding: 80px !important;
+                box-sizing: border-box !important;
+            }
+            /* Esconder UI de navegação */
+            #mesh-blob, .nav-btn, .progress-bar-container, #btn-pdf {
+                display: none !important;
+            }
+            /* Forçar estado final das animações */
+            .reveal-up, .reveal-scale, .highlight-bg, .treasure-line-anim, .piece-hit-anim, .piece-fall-anim, .timeline-line-anim, .highlight-text-anim, .shimmer-text, .glass-card::before, .timeline-node {
+                opacity: 1 !important;
+                transform: none !important;
+                filter: none !important;
+                animation: none !important;
+                transition: none !important;
+                background-size: 100% 100% !important;
+            }
+            .timeline-node { border-color: #FFA500 !important; background-color: rgba(255,165,0,0.1) !important; }
+            .timeline-icon { color: #FFA500 !important; }
+            .timeline-line-anim { transform: scaleY(1) !important; }
+            .animate-marquee { animation: none !important; transform: none !important; }
+            .content-box { max-height: none !important; overflow: visible !important; padding: 2rem !important; }
+            /* Garantir cores de fundo no PDF */
+            .glass-card, .bento-box {
+                background: #0A0A0A !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            }
+            /* 🔴 FORÇAR TAILWIND DESKTOP (Evitar quebra de colunas) 🔴 */
+            [class*="md:grid-cols-2"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+            [class*="md:grid-cols-3"] { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+            [class*="md:grid-cols-4"] { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+            [class*="lg:grid-cols-2"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+            [class*="lg:grid-cols-3"] { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+            [class*="md:flex-row"] { flex-direction: row !important; }
+            [class*="md:block"] { display: block !important; }
+            [class*="md:flex"] { display: flex !important; }
+            [class*="md:w-56"] { width: 14rem !important; }
+            [class*="md:w-64"] { width: 16rem !important; }
+            [class*="md:text-5xl"] { font-size: 3rem !important; line-height: 1 !important; }
+            [class*="md:text-6xl"] { font-size: 3.75rem !important; line-height: 1 !important; }
+            [class*="md:text-7xl"] { font-size: 4.5rem !important; line-height: 1 !important; }
+        }
     </style>
 </head>
 <body>
 
     <div id="mesh-bg"></div>
     <div id="mesh-blob"></div>
+
+    <!-- Botão de Download PDF -->
+    <button id="btn-pdf" onclick="window.print()" class="fixed bottom-6 left-6 z-50 bg-[#111] hover:bg-[#222] border border-white/10 text-white rounded-full p-4 shadow-2xl transition-all flex items-center justify-center group" title="Baixar PDF">
+        <i class="ph-bold ph-download-simple text-xl text-gray-400 group-hover:text-white transition-colors"></i>
+        <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:ml-3 transition-all duration-300 ease-in-out text-sm font-medium text-gray-300 group-hover:text-white">Baixar PDF</span>
+    </button>
 
     <!-- Controles de Navegacão -->
     <button id="prev-btn" class="nav-btn"><i class="ph-bold ph-arrow-left text-xl"></i></button>
